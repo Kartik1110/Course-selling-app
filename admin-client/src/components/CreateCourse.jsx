@@ -142,7 +142,7 @@ function CreateCourse() {
 				onClose={() => setOpen(false)}
 			>
 				<Alert severity="success" sx={{ width: '100%' }}>
-					Logged in successfully!
+					Course created successfully!
 				</Alert>
 			</Snackbar>
 		</div>

@@ -59,6 +59,7 @@ function ShowCourses() {
 				style={{
 					display: 'flex',
 					flexDirection: 'row',
+					justifyContent: 'center',
 					flexWrap: 'wrap',
 				}}
 			>

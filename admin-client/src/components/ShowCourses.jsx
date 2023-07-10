@@ -28,14 +28,20 @@ function ShowCourses() {
 	};
 	return (
 		<div>
-			<Typography align={'center'} component="h1" variant="h4" fontWeight={600} 
-			sx={{ marginTop: 5, color:'white' }}>
+			<Typography
+				align={'center'}
+				component="h1"
+				variant="h4"
+				fontWeight={600}
+				sx={{ marginTop: 5, color: 'white' }}
+			>
 				Courses
 			</Typography>
 			<div
 				style={{
 					display: 'flex',
 					flexDirection: 'row',
+					justifyContent: 'center',
 					flexWrap: 'wrap',
 				}}
 			>
