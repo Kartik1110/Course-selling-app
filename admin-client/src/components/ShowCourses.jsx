@@ -47,13 +47,16 @@ function ShowCourses() {
 			>
 				{courses.map((course) => {
 					const courseObj = {
+						id: course._id,
 						title: course.title,
 						description: course.description,
 						price: course.price,
 						imageLink: course.imageLink,
 						published: course.published,
 					};
-					return <Course key={course._id} courses={courseObj} />;
+					return (
+						<Course key={course._id} courses={courseObj} editable={true} />
+					);
 				})}
 			</div>
 		</div>

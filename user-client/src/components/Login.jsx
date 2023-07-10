@@ -107,7 +107,7 @@ function Login() {
 				<br />
 				<Typography component="h4" variant="h6">
 					New here?
-					<Button variant="outlined" size="large">
+					<Button variant="outlined" size="large" sx={{ ml: 2 }}>
 						<Link
 							style={{ textDecoration: 'none', color: 'black' }}
 							to="/register"

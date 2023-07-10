@@ -25,7 +25,6 @@ function getProtectedRoutes(protectedRoutes) {
 /* get all PUBLIC routes */
 function getPublicRoutes(publicRoutes) {
 	if (publicRoutes && publicRoutes.length > 0) {
-		console.log(publicRoutes);
 		return publicRoutes.map((item) => ({
 			errorElement: <Error />,
 			...item,

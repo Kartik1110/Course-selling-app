@@ -88,7 +88,7 @@ function Register() {
 				<br />
 				<Typography component="h5" variant="h6">
 					Already a user?
-					<Button variant="outlined">
+					<Button variant="outlined" sx={{ ml: 2 }}>
 						<Link
 							style={{ textDecoration: 'none', color: 'black' }}
 							to="/login"
