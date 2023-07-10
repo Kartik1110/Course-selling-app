@@ -43,6 +43,7 @@ export default function PurchasedCourses() {
 				style={{
 					display: 'flex',
 					flexDirection: 'row',
+					justifyContent: 'center',
 					flexWrap: 'wrap',
 				}}
 			>

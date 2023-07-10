@@ -41,7 +41,7 @@ function Course(props) {
 							{description}
 						</Typography>
 						<Typography component="a" variant="h6">
-							{price}
+							Rs. {price}/-
 						</Typography>
 					</CardContent>
 				</CardActionArea>
