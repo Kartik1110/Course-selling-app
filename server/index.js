@@ -48,6 +48,7 @@ mongoose.connect(mongoDBURI, {
 });
 
 // Admin routes
+/* ADMIN - signup route */
 app.post('/admin/signup', async (req, res) => {
 	let { username, password } = req.body;
 	let adminFound = await Admin.findOne({ username });
@@ -66,6 +67,7 @@ app.post('/admin/signup', async (req, res) => {
 	}
 });
 
+/* ADMIN - login route */
 app.post('/admin/login', async (req, res) => {
 	const { username, password } = req.headers;
 	const admin = await Admin.findOne({ username, password });
@@ -77,12 +79,14 @@ app.post('/admin/login', async (req, res) => {
 	}
 });
 
+/* ADMIN - create a course  */
 app.post('/admin/courses', authenticateJwt, async (req, res) => {
 	const course = new Courses(req.body);
 	await course.save();
 	res.json({ message: 'Course created successfully', courseId: course.id });
 });
 
+/* ADMIN - update a course */
 app.put('/admin/courses/:courseId', authenticateJwt, async (req, res) => {
 	const course = await Courses.findByIdAndUpdate(
 		req.params.courseId,
@@ -98,12 +102,24 @@ app.put('/admin/courses/:courseId', authenticateJwt, async (req, res) => {
 	}
 });
 
+/* ADMIN - get all the courses */
 app.get('/admin/courses', authenticateJwt, async (req, res) => {
 	const courses = await Courses.find({});
 	res.json({ courses });
 });
 
+/* ADMIN - get a single course by id */
+app.get('/admin/courses/:courseId', authenticateJwt, async (req, res) => {
+	const course = await Courses.findById(req.params.courseId);
+	if (course) {
+		res.json({ course });
+	} else {
+		res.status(404).send({ message: 'Course not found' });
+	}
+});
+
 // User routes
+/* USER - signup route */
 app.post('/users/signup', async (req, res) => {
 	let { username, password } = req.body;
 	let userFound = await User.findOne({ username });
@@ -122,6 +138,7 @@ app.post('/users/signup', async (req, res) => {
 	}
 });
 
+/* USER - login route */
 app.post('/users/login', async (req, res) => {
 	const { username, password } = req.headers;
 	const user = await User.findOne({ username, password });
@@ -133,11 +150,13 @@ app.post('/users/login', async (req, res) => {
 	}
 });
 
+/* USER - get all the courses */
 app.get('/users/courses', authenticateJwt, async (req, res) => {
 	const courses = await Courses.find({ published: true });
 	res.json({ courses });
 });
 
+/* USER - purchase a course */
 app.post('/users/courses/:courseId', authenticateJwt, async (req, res) => {
 	const course = await Courses.findById(req.params.courseId);
 	if (course) {
@@ -154,6 +173,7 @@ app.post('/users/courses/:courseId', authenticateJwt, async (req, res) => {
 	}
 });
 
+/* USER - get purchased courses */
 app.get('/users/purchasedCourses', authenticateJwt, async (req, res) => {
 	const user = await User.findOne({ username: req.user.username }).populate(
 		'purchasedCourses'

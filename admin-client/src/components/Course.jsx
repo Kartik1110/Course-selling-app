@@ -8,10 +8,13 @@ import {
 	CardContent,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
+import { Link } from 'react-router-dom';
 
 function Course(props) {
 	// eslint-disable-next-line react/prop-types
-	const { title, description, price, imageLink, published } = props.courses;
+	const { id, title, description, price, imageLink, published } = props.courses;
+	// eslint-disable-next-line react/prop-types
+	const { editable } = props;
 	return (
 		<div
 			style={{
@@ -46,14 +49,21 @@ function Course(props) {
 					</CardContent>
 				</CardActionArea>
 				<CardActions sx={{ position: 'absolute', bottom: 0, right: 0 }}>
-					<EditIcon
-						style={{
-							cursor: 'pointer',
-							fontSize: 24,
-							color: '#0288d1',
-							marginRight: 15,
-						}}
-					/>
+					{editable && (
+						<Link
+							to={`/course/${id}`}
+							style={{ textDecoration: 'none', color: 'inherit' }}
+						>
+							<EditIcon
+								style={{
+									cursor: 'pointer',
+									fontSize: 24,
+									color: '#0288d1',
+									marginRight: 15,
+								}}
+							/>
+						</Link>
+					)}
 					<Button variant={published ? 'contained' : 'outlined'} color="info">
 						{published ? 'published' : 'unpublished'}
 					</Button>
