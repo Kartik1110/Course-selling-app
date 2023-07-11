@@ -23,7 +23,7 @@ function Navbar() {
 			}}
 		>
 			<div>
-				<Typography sx={{ margin: 2 }} variant="h4" fontWeight={700}>
+				<Typography sx={{ margin: 2 }} variant="h4">
 					<Link style={{ textDecoration: 'none', color: 'black' }} to="/">
 						CourseX - Admin
 					</Link>
