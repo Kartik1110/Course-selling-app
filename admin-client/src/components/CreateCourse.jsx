@@ -9,6 +9,8 @@ import {
 	Button,
 	Snackbar,
 	Alert,
+	Checkbox,
+	FormControlLabel,
 } from '@mui/material';
 
 function CreateCourse() {
@@ -117,13 +119,15 @@ function CreateCourse() {
 						value={formData.imageLink}
 						onChange={(e) => handleFormChange(e)}
 					/>
-
-					<label>Published</label>
-					<input
-						type="checkbox"
-						name="published"
-						value={formData.published}
-						onChange={(e) => handleFormChange(e)}
+					<FormControlLabel
+						control={
+							<Checkbox
+								name="published"
+								value={formData.published}
+								onChange={(e) => handleFormChange(e)}
+							/>
+						}
+						label="Published"
 					/>
 				</Box>
 				<div>
