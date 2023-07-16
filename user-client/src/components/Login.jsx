@@ -35,11 +35,11 @@ function Login() {
 			)
 			.then((res) => {
 				console.log(res.data);
-				localStorage.setItem('token', res.data.token);
+				localStorage.setItem('token', res.data?.loggedInUser?.token);
+				localStorage.setItem('user', res.data?.loggedInUser?.name);
 				setOpen(true);
 				navigate('/courses');
 			});
-		console.log('formData', formData);
 		resetFormData();
 	};
 
