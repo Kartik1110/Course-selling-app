@@ -35,7 +35,8 @@ function Login() {
 				}
 			)
 			.then((res) => {
-				localStorage.setItem('token', res.data.token);
+				localStorage.setItem('token', res.data?.loggedInAdmin?.token);
+				localStorage.setItem('user', res.data?.loggedInAdmin?.name);
 				setOpen(true);
 				navigate('/courses');
 			})

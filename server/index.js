@@ -73,7 +73,11 @@ app.post('/admin/login', async (req, res) => {
 	const admin = await Admin.findOne({ username, password });
 	if (admin) {
 		const token = generateJwt(admin);
-		res.status(200).json({ message: 'Logged in successfully', token });
+		const loggedInAdmin = {
+			name: admin.username,
+			token,
+		};
+		res.status(200).json({ message: 'Logged in successfully', loggedInAdmin });
 	} else {
 		res.status(403).json({ message: 'Invalid username or password' });
 	}
@@ -144,7 +148,11 @@ app.post('/users/login', async (req, res) => {
 	const user = await User.findOne({ username, password });
 	if (user) {
 		const token = generateJwt(user);
-		res.status(200).json({ message: 'Logged in successfully', token });
+		const loggedInUser = {
+			name: user.username,
+			token,
+		};
+		res.status(200).json({ message: 'Logged in successfully', loggedInUser });
 	} else {
 		res.status(403).json({ message: 'Invalid username or password' });
 	}

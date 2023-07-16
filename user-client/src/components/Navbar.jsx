@@ -1,8 +1,10 @@
 import { Button, Typography } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
+import PersonIcon from '@mui/icons-material/Person';
 
 function Navbar() {
 	const token = localStorage.getItem('token');
+	const user = localStorage.getItem('user');
 	const navigate = useNavigate();
 
 	const handleLogout = () => {
@@ -30,19 +32,36 @@ function Navbar() {
 				</Typography>
 			</div>
 			{token ? (
-				<Button
-					variant="contained"
-					sx={{ margin: 2 }}
-					color="warning"
-					onClick={handleLogout}
+				<div
+					style={{
+						display: 'flex',
+						flexDirection: 'row',
+						alignItems: 'center',
+						justifyContent: 'space-between',
+					}}
 				>
-					<Link
-						style={{ textDecoration: 'none', color: 'white' }}
-						to="/register"
+					<PersonIcon
+						fontSize="large"
+						color="warning"
+						sx={{
+							padding: 2,
+						}}
+					/>
+					<Typography variant="h5">{user}</Typography>
+					<Button
+						variant="contained"
+						sx={{ margin: 2 }}
+						color="warning"
+						onClick={handleLogout}
 					>
-						Logout
-					</Link>
-				</Button>
+						<Link
+							style={{ textDecoration: 'none', color: 'white' }}
+							to="/register"
+						>
+							Logout
+						</Link>
+					</Button>
+				</div>
 			) : (
 				<div>
 					<Button variant="contained" sx={{ margin: 2 }}>
