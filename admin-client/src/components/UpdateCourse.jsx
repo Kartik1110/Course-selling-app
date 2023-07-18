@@ -13,19 +13,23 @@ import {
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Course from '../components/Course';
-import { useForm } from '../hooks/useForm';
 
 export default function UpdateCourse() {
 	const { courseId } = useParams();
 	const [courseObj, setCourseObj] = useState({});
 	const [open, setOpen] = useState(false);
-	const [formData, handleFormChange, resetFormData] = useForm({
+	const [formData, setFormData] = useState({
 		title: '',
 		description: '',
 		price: '',
 		imageLink: '',
 		published: false,
 	});
+
+	/* This function is used to handle form change */
+	const handleFormChange = (e) => {
+		setFormData({ ...formData, [e.target.name]: e.target.value });
+	};
 
 	useEffect(() => {
 		const fetchCourse = () => {
@@ -40,11 +44,21 @@ export default function UpdateCourse() {
 				})
 				.then((res) => {
 					setCourseObj(res.data.course);
+					const { title, description, price, imageLink, published } =
+						res.data.course;
+					setFormData({
+						title,
+						description,
+						price: String(price),
+						imageLink,
+						published,
+					});
 				});
 		};
 		fetchCourse();
 	}, [courseId]);
 
+	/* This function is used to handle course update  */
 	const handleCourseUpdate = () => {
 		const token = localStorage.getItem('token');
 
@@ -66,7 +80,13 @@ export default function UpdateCourse() {
 			.then(() => {
 				setOpen(true);
 			});
-		resetFormData();
+		setFormData({
+			title: '',
+			description: '',
+			price: '',
+			imageLink: '',
+			published: false,
+		});
 	};
 
 	return (
