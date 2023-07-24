@@ -1,33 +1,19 @@
 import { useState, useEffect } from 'react';
 import { Typography } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Course from './Course';
 
 function ShowCourses() {
-	// const [courses, setCourses] = useState([]);
-	const courseQuery = useQuery({
-		queryKey: ['courses'],
-		queryFn: fetchCourse,
-	});
+	const [courses, setCourses] = useState([]);
 
 	useEffect(() => {
-		courseQuery.refetch();
-		// fetchCourse();
-	}, [courseQuery]);
+		fetchCourse();
+	}, []);
 
-	if (courseQuery.error) {
-		return <h1>Error: {JSON.stringify(courseQuery.error.message)}</h1>;
-	}
-
-	if (courseQuery.isLoading) {
-		return <h1>Loading...</h1>;
-	}
-
-	function fetchCourse() {
+	const fetchCourse = () => {
 		const token = localStorage.getItem('token');
 
-		return axios
+		axios
 			.get('http://localhost:3000/admin/courses', {
 				headers: {
 					'Content-Type': 'application/json',
@@ -35,11 +21,9 @@ function ShowCourses() {
 				},
 			})
 			.then((res) => {
-				console.log('res>>', courseQuery.data);
-				return res.data.courses;
-				// setCourses(res.data.courses);
+				setCourses(res.data.courses);
 			});
-	}
+	};
 	return (
 		<div>
 			<Typography
@@ -59,7 +43,7 @@ function ShowCourses() {
 					flexWrap: 'wrap',
 				}}
 			>
-				{courseQuery.data.map((course) => {
+				{courses.map((course) => {
 					const courseObj = {
 						id: course._id,
 						title: course.title,
