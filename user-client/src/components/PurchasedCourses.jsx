@@ -23,7 +23,6 @@ export default function PurchasedCourses() {
 				},
 			})
 			.then((res) => {
-				console.log(res.data);
 				setCourses(res.data.purchasedCourses);
 			});
 	};

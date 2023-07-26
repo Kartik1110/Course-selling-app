@@ -1,15 +1,17 @@
 {
     "compilerOptions": {
-      "target": "ES2015",
-      "outDir": "dist",
-      "module": "commonjs",
-      "moduleResolution": "node",
-      "strict": true,
-      "skipLibCheck": true,
-      "forceConsistentCasingInFileNames": true
+      "target": "es6",                    // Specify ECMAScript target version
+      "module": "commonjs",               // Specify module system (Node.js uses CommonJS)
+      "outDir": "./dist",                 // Output directory for compiled files
+      "rootDir": "./src",                 // Source directory
+      "strict": false,                     // Enable strict type checking
+      "esModuleInterop": true,            // Enable compatibility with CommonJS modules
+      "forceConsistentCasingInFileNames": true, // Enforce consistent filename casing
+      "resolveJsonModule": true,          // Allow importing JSON modules
+      "declaration": true,               // Generate .d.ts declaration files
+      "sourceMap": true                   // Generate source maps for debugging
     },
-    "$schema": "https://json.schemastore.org/tsconfig",
-    "display": "Recommended",
-    "include": ["src/**/*"],
-    "exclude": ["node_modules", "**/*.spec.ts"]
+    "include": ["src/**/*.ts"],          // Files to include for compilation
+    "exclude": ["node_modules"]          // Files to exclude from compilation
   }
+  

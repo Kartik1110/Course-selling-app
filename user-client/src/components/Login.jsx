@@ -34,7 +34,6 @@ function Login() {
 				}
 			)
 			.then((res) => {
-				console.log(res.data);
 				localStorage.setItem('token', res.data?.loggedInUser?.token);
 				localStorage.setItem('user', res.data?.loggedInUser?.name);
 				setOpen(true);

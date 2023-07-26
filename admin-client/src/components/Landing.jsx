@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 /// Logging a user out is as simple as deleting the token from the local storage.
 function Landing() {
 	const token = localStorage.getItem('token');
-	console.log('token', token);
 
 	return (
 		<div>

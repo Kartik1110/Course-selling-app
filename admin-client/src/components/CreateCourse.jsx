@@ -43,7 +43,6 @@ function CreateCourse() {
 				},
 			})
 			.then((res) => {
-				console.log(res);
 				setOpen(true);
 			});
 		resetFormData();

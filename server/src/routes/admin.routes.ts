@@ -1,13 +1,13 @@
-const express = require('express');
-const router = express.Router();
-const Admin = require('../models/admin.model');
-const Courses = require('../models/courses.model');
-const { authenticateJwt } = require('../middleware/auth');
-const { generateJwt } = require('../utils/utils');
+import express, { Request, Response, Router } from 'express';
+import Admin from '../models/admin.model';
+import Courses from '../models/courses.model';
+import { authenticateJwt } from '../middleware/auth';
+import { generateJwt } from '../utils/utils';
 
+const adminRouter = Router();
 // Admin routes
 /* ADMIN - signup route */
-router.post('/signup', async (req, res) => {
+adminRouter.post('/signup', async (req: Request, res: Response) => {
 	let { username, password } = req.body;
 	let adminFound = await Admin.findOne({ username });
 
@@ -26,7 +26,7 @@ router.post('/signup', async (req, res) => {
 });
 
 /* ADMIN - login route */
-router.post('/login', async (req, res) => {
+adminRouter.post('/login', async (req, res) => {
 	const { username, password } = req.headers;
 	const admin = await Admin.findOne({ username, password });
 	if (admin) {
@@ -42,14 +42,14 @@ router.post('/login', async (req, res) => {
 });
 
 /* ADMIN - create a course  */
-router.post('/courses', authenticateJwt, async (req, res) => {
+adminRouter.post('/courses', authenticateJwt, async (req, res) => {
 	const course = new Courses(req.body);
 	await course.save();
 	res.json({ message: 'Course created successfully', courseId: course.id });
 });
 
 /* ADMIN - update a course */
-router.put('/courses/:courseId', authenticateJwt, async (req, res) => {
+adminRouter.put('/courses/:courseId', authenticateJwt, async (req, res) => {
 	const course = await Courses.findByIdAndUpdate(
 		req.params.courseId,
 		req.body,
@@ -65,13 +65,13 @@ router.put('/courses/:courseId', authenticateJwt, async (req, res) => {
 });
 
 /* ADMIN - get all the courses */
-router.get('/courses', authenticateJwt, async (req, res) => {
+adminRouter.get('/courses', authenticateJwt, async (req, res) => {
 	const courses = await Courses.find({});
 	res.json({ courses });
 });
 
 /* ADMIN - get a single course by id */
-router.get('/courses/:courseId', authenticateJwt, async (req, res) => {
+adminRouter.get('/courses/:courseId', authenticateJwt, async (req, res) => {
 	const course = await Courses.findById(req.params.courseId);
 	if (course) {
 		res.json({ course });
@@ -80,4 +80,4 @@ router.get('/courses/:courseId', authenticateJwt, async (req, res) => {
 	}
 });
 
-module.exports = router;
+export default adminRouter;
