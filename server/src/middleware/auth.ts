@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
 /* This is the secret used to verify the jwt token */
 const SECRET_KEY = 's3cr3tk3333y';
@@ -10,7 +10,7 @@ const authenticateJwt = (req, res, next) => {
 	if (authHeader) {
 		const token = authHeader.split(' ')[1];
 
-		jwt.verify(token, SECRET_KEY, (err, user) => {
+		jwt.verify(token, SECRET_KEY, (err: jwt.VerifyErrors | null, user: any) => {
 			if (err) {
 				return res.sendStatus(403);
 			}
@@ -22,4 +22,4 @@ const authenticateJwt = (req, res, next) => {
 	}
 };
 
-module.exports = { authenticateJwt, SECRET_KEY };
+export { authenticateJwt, SECRET_KEY };

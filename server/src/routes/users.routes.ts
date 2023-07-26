@@ -1,13 +1,16 @@
-const express = require('express');
-const router = express.Router();
-const Courses = require('../models/courses.model');
-const User = require('../models/user.model');
-const { authenticateJwt } = require('../middleware/auth');
-const { generateJwt } = require('../utils/utils');
+
+import express, { Router } from 'express';
+import Admin from '../models/admin.model';
+import Courses from '../models/courses.model';
+import User from '../models/user.model';
+import { authenticateJwt } from '../middleware/auth';
+import { generateJwt } from '../utils/utils';
+
+const usersRouter = Router();
 
 // User routes
 /* USER - signup route */
-router.post('/signup', async (req, res) => {
+usersRouter.post('/signup', async (req, res) => {
 	let { username, password } = req.body;
 	let userFound = await User.findOne({ username });
 
@@ -26,7 +29,7 @@ router.post('/signup', async (req, res) => {
 });
 
 /* USER - login route */
-router.post('/login', async (req, res) => {
+usersRouter.post('/login', async (req, res) => {
 	const { username, password } = req.headers;
 	const user = await User.findOne({ username, password });
 	if (user) {
@@ -42,14 +45,15 @@ router.post('/login', async (req, res) => {
 });
 
 /* USER - get all the courses */
-router.get('/courses', authenticateJwt, async (req, res) => {
+usersRouter.get('/courses', authenticateJwt, async (req, res) => {
 	const courses = await Courses.find({ published: true });
 	res.json({ courses });
 });
 
 /* USER - purchase a course */
-router.post('/courses/:courseId', authenticateJwt, async (req, res) => {
-	const course = await Courses.findById(req.params.courseId);
+/* TODO: Remove all any */ 
+usersRouter.post('/courses/:courseId', authenticateJwt, async (req: any, res) => {
+	const course: any = await Courses.findById(req.params.courseId);
 	if (course) {
 		const user = await User.findOne({ username: req.user.username });
 		if (user) {
@@ -65,7 +69,8 @@ router.post('/courses/:courseId', authenticateJwt, async (req, res) => {
 });
 
 /* USER - get purchased courses */
-router.get('/purchasedCourses', authenticateJwt, async (req, res) => {
+/* TODO: Remove any */ 
+usersRouter.get('/purchasedCourses', authenticateJwt, async (req: any, res) => {
 	const user = await User.findOne({ username: req.user.username }).populate(
 		'purchasedCourses'
 	);
@@ -76,4 +81,4 @@ router.get('/purchasedCourses', authenticateJwt, async (req, res) => {
 	}
 });
 
-module.exports = router;
+export default usersRouter;
