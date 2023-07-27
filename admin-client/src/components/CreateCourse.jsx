@@ -42,7 +42,7 @@ function CreateCourse() {
 					Authorization: `Bearer ${token}`,
 				},
 			})
-			.then((res) => {
+			.then(() => {
 				setOpen(true);
 			});
 		resetFormData();
@@ -60,7 +60,7 @@ function CreateCourse() {
 			<Paper
 				sx={{
 					marginTop: 8,
-					padding: 10,
+					padding: 5,
 					width: '400px',
 					display: 'flex',
 					flexDirection: 'column',
@@ -70,7 +70,7 @@ function CreateCourse() {
 				elevation={3}
 			>
 				<Typography component="h1" variant="h4">
-					Create Course Page
+					Create course
 				</Typography>
 				<Box
 					component="form"
