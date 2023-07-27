@@ -24,10 +24,34 @@ function Navbar() {
 				boxShadow: '2px 2px 4px #00000080',
 			}}
 		>
-			<div>
+			<div
+				style={{
+					display: 'flex',
+					flexDirection: 'row',
+					alignItems: 'center',
+					justifyContent: 'space-between',
+					height: '10vh',
+				}}
+			>
 				<Typography sx={{ margin: 2 }} variant="h4" fontWeight={700}>
 					<Link style={{ textDecoration: 'none', color: 'black' }} to="/">
 						CourseX
+					</Link>
+				</Typography>
+				<Typography variant="h5" sx={{ margin: 2 }}>
+					<Link
+						style={{ textDecoration: 'none', color: 'black' }}
+						to="/courses"
+					>
+						Courses
+					</Link>
+				</Typography>
+				<Typography variant="h5" sx={{ margin: 2 }}>
+					<Link
+						style={{ textDecoration: 'none', color: 'black' }}
+						to="/my-courses"
+					>
+						My courses
 					</Link>
 				</Typography>
 			</div>
