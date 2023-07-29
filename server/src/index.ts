@@ -16,14 +16,13 @@ app.use('/admin', adminRouter);
 app.use('/users', usersRouter);
 
 /* Connecting to MongoDB */
-const mongoDBURI =
-  'mongodb+srv://mongo:mongo@cluster0.t8eg4us.mongodb.net/';
+const mongoDBURI: string =
+	'mongodb+srv://mongo:mongo@cluster0.t8eg4us.mongodb.net/';
+
 mongoose.connect(mongoDBURI, {
-  // useNewUrlParser: true,
-  // useUnifiedTopology: true,
-  dbName: 'courses',
+	dbName: 'courses',
 });
 
 app.listen(port, () => {
-  console.log(`Server is listening on port ${port}`);
+	console.log(`Server is listening on port ${port}`);
 });
