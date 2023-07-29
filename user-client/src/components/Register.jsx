@@ -12,19 +12,39 @@ import {
 	Alert,
 } from '@mui/material';
 
-/// File is incomplete. You need to add input boxes to take input for users to register.
 function Register() {
 	const [formData, handleFormChange, resetFormData] = useForm({
 		username: '',
 		password: '',
 	});
-	const [open, setOpen] = useState(false);
+	/* This is used to set data for SnackBar component  */
+	const [snackBar, setSnackBar] = useState({
+		open: false,
+		severity: 'success',
+		msg: '',
+	});
 
 	const handleFormSubmit = (e) => {
 		e.preventDefault();
-		axios.post('http://localhost:3000/users/signup', formData).then(() => {
-			setOpen(true);
-		});
+		axios
+			.post('http://localhost:3000/users/signup', formData)
+			.then((data) => {
+				console.log(data.data.message);
+				setSnackBar({
+					open: true,
+					msg: data.data.message,
+					severity: 'success',
+				});
+			})
+			.catch((error) => {
+				setSnackBar({
+					open: true,
+					msg: error.response.data.message,
+					severity: 'error',
+				});
+
+				console.log('error', error.response.data.message);
+			});
 		resetFormData();
 	};
 
@@ -99,12 +119,12 @@ function Register() {
 				</Typography>
 			</Paper>
 			<Snackbar
-				open={open}
+				open={snackBar.open}
 				autoHideDuration={6000}
-				onClose={() => setOpen(false)}
+				onClose={() => setSnackBar({ open: false })}
 			>
-				<Alert severity="success" sx={{ width: '100%' }}>
-					Account created!
+				<Alert severity={snackBar.severity} sx={{ width: '100%' }}>
+					{snackBar.msg}
 				</Alert>
 			</Snackbar>
 		</div>
