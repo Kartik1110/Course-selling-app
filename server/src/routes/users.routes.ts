@@ -22,13 +22,13 @@ usersRouter.post('/signup', async (req, res) => {
 	
 	/* Validating the input in req body */ 
 	if(!parsedData.success) {
-		return res.status(400).json({ message: 'Username and password must be strings' });
+		return res.status(400).json({ message: 'Please enter a valid username and password!' });
 	}
 
 	let userFound = await User.findOne({ username: parsedData.data.username });
 
 	if (userFound) {
-		return res.status(403).json({ message: 'User already exists' });
+		return res.status(403).json({ message: 'User already exists!' });
 	} else {
 		const newUserObj = {
 			username: parsedData.data.username,
