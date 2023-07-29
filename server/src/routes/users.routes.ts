@@ -1,6 +1,6 @@
 
-import express, { Router } from 'express';
-import Admin from '../models/admin.model';
+import { Router } from 'express';
+import {z} from 'zod';
 import Courses from '../models/courses.model';
 import User from '../models/user.model';
 import { authenticateJwt } from '../middleware/auth';
@@ -8,18 +8,31 @@ import { generateJwt } from '../utils/utils';
 
 const usersRouter = Router();
 
+
+const userProps = z.object({
+	username: z.string().min(6).max(20),
+	password: z.string().min(6).max(20),
+  });
+
 // User routes
 /* USER - signup route */
-usersRouter.post('/signup', async (req, res) => {
+usersRouter.post('/signup', async (req, res) => {	
 	let { username, password } = req.body;
-	let userFound = await User.findOne({ username });
+	const parsedData = userProps.safeParse({ username, password });
+	
+	/* Validating the input in req body */ 
+	if(!parsedData.success) {
+		return res.status(400).json({ message: 'Username and password must be strings' });
+	}
+
+	let userFound = await User.findOne({ username: parsedData.data.username });
 
 	if (userFound) {
 		return res.status(403).json({ message: 'User already exists' });
 	} else {
 		const newUserObj = {
-			username,
-			password,
+			username: parsedData.data.username,
+			password: parsedData.data.password,
 		};
 		const newUser = new User(newUserObj);
 		await newUser.save();
