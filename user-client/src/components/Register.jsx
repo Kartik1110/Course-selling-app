@@ -29,7 +29,6 @@ function Register() {
 		axios
 			.post('http://localhost:3000/users/signup', formData)
 			.then((data) => {
-				console.log(data.data.message);
 				setSnackBar({
 					open: true,
 					msg: data.data.message,

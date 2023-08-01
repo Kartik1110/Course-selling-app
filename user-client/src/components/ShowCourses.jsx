@@ -5,7 +5,12 @@ import Course from './Course';
 
 function ShowCourses() {
 	const [courses, setCourses] = useState([]);
-	const [open, setOpen] = useState(false);
+	/* This is used to set data for SnackBar component  */
+	const [snackBar, setSnackBar] = useState({
+		open: false,
+		severity: 'success',
+		msg: '',
+	});
 
 	useEffect(() => {
 		fetchCourse();
@@ -41,7 +46,18 @@ function ShowCourses() {
 				}
 			)
 			.then((res) => {
-				setOpen(true);
+				setSnackBar({
+					open: true,
+					msg: res.data.message,
+					severity: 'success',
+				});
+			})
+			.catch((error) => {
+				setSnackBar({
+					open: true,
+					msg: error.response.data.message,
+					severity: 'error',
+				});
 			});
 	};
 	return (
@@ -81,12 +97,12 @@ function ShowCourses() {
 				})}
 			</div>
 			<Snackbar
-				open={open}
+				open={snackBar.open}
 				autoHideDuration={6000}
-				onClose={() => setOpen(false)}
+				onClose={() => setSnackBar({ open: false })}
 			>
-				<Alert severity="success" sx={{ width: '100%' }}>
-					Course purchased!
+				<Alert severity={snackBar.severity} sx={{ width: '100%' }}>
+					{snackBar.msg}
 				</Alert>
 			</Snackbar>
 		</div>
