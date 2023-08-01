@@ -17,7 +17,12 @@ function Login() {
 		username: '',
 		password: '',
 	});
-	const [open, setOpen] = useState(false);
+	/* This is used to set data for SnackBar component  */
+	const [snackBar, setSnackBar] = useState({
+		open: false,
+		severity: 'success',
+		msg: '',
+	});
 	const navigate = useNavigate();
 
 	const handleFormSubmit = (e) => {
@@ -36,8 +41,19 @@ function Login() {
 			.then((res) => {
 				localStorage.setItem('token', res.data?.loggedInUser?.token);
 				localStorage.setItem('user', res.data?.loggedInUser?.name);
-				setOpen(true);
+				setSnackBar({
+					open: true,
+					msg: res.data.message,
+					severity: 'success',
+				});
 				navigate('/courses');
+			})
+			.catch((error) => {
+				setSnackBar({
+					open: true,
+					msg: error.response.data.message,
+					severity: 'error',
+				});
 			});
 		resetFormData();
 	};
@@ -117,12 +133,12 @@ function Login() {
 				</Typography>
 			</Paper>
 			<Snackbar
-				open={open}
+				open={snackBar.open}
 				autoHideDuration={6000}
-				onClose={() => setOpen(false)}
+				onClose={() => setSnackBar({ open: false })}
 			>
-				<Alert severity="success" sx={{ width: '100%' }}>
-					Logged in successfully!
+				<Alert severity={snackBar.severity} sx={{ width: '100%' }}>
+					{snackBar.msg}
 				</Alert>
 			</Snackbar>
 		</div>
