@@ -44,25 +44,6 @@ function Landing() {
 			>
 				Fuel you ambitions !
 			</Typography>
-			{/* <Typography component="h5" variant="h6">
-				New here?
-				<Button sx={{ margin: 2 }} variant="contained">
-					<Link
-						style={{ textDecoration: 'none', color: 'black' }}
-						to="/register"
-					>
-						Register
-					</Link>
-				</Button>
-			</Typography>
-			<Typography component="h5" variant="h6">
-				Already a user?
-				<Button sx={{ margin: 2 }} variant="contained">
-					<Link style={{ textDecoration: 'none', color: 'black' }} to="/login">
-						login
-					</Link>
-				</Button>
-			</Typography> */}
 		</div>
 	);
 }
