@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import axios from 'axios';
-import { useForm } from '../hooks/useForm';
-import { Link } from 'react-router-dom';
+import { useState } from "react";
+import axios from "axios";
+import { useForm } from "../hooks/useForm";
+import { Link } from "react-router-dom";
 import {
 	Paper,
 	Typography,
@@ -9,43 +9,61 @@ import {
 	TextField,
 	Button,
 	Snackbar,
-	Alert,
-} from '@mui/material';
+	Alert
+} from "@mui/material";
 
 /// File is incomplete. You need to add input boxes to take input for users to register.
 function Register() {
 	const [formData, handleFormChange, resetFormData] = useForm({
-		username: '',
-		password: '',
+		username: "",
+		password: ""
 	});
-	const [open, setOpen] = useState(false);
+	/* This is used to set data for SnackBar component  */
+	const [snackBar, setSnackBar] = useState({
+		open: false,
+		severity: "success",
+		msg: ""
+	});
 
 	const handleFormSubmit = (e) => {
 		e.preventDefault();
-		axios.post('http://localhost:3000/admin/signup', formData).then(() => {
-			setOpen(true);
-		});
+		axios
+			.post("http://localhost:3000/admin/signup", formData)
+			.then((data) => {
+				setSnackBar({
+					open: true,
+					msg: data.data.message,
+					severity: "success"
+				});
+			})
+			.catch((error) => {
+				setSnackBar({
+					open: true,
+					msg: error.response.data.message,
+					severity: "error"
+				});
+			});
 		resetFormData();
 	};
 
 	return (
 		<div
 			style={{
-				height: '90vh',
-				display: 'flex',
-				flexDirection: 'column',
-				alignItems: 'center',
-				justifyContent: 'center',
+				height: "90vh",
+				display: "flex",
+				flexDirection: "column",
+				alignItems: "center",
+				justifyContent: "center"
 			}}
 		>
 			<Paper
 				sx={{
 					padding: 10,
-					width: '400px',
-					display: 'flex',
-					flexDirection: 'column',
-					alignItems: 'center',
-					justifyContent: 'center',
+					width: "400px",
+					display: "flex",
+					flexDirection: "column",
+					alignItems: "center",
+					justifyContent: "center"
 				}}
 				elevation={3}
 			>
@@ -56,14 +74,14 @@ function Register() {
 					component="form"
 					sx={{
 						mt: 1,
-						display: 'flex',
-						flexDirection: 'column',
-						alignItems: 'center',
-						margin: '20px',
+						display: "flex",
+						flexDirection: "column",
+						alignItems: "center",
+						margin: "20px"
 					}}
 				>
 					<TextField
-						sx={{ margin: '20px' }}
+						sx={{ margin: "20px" }}
 						fullWidth={true}
 						type="text"
 						name="username"
@@ -90,7 +108,7 @@ function Register() {
 					Already a user?
 					<Button variant="outlined" sx={{ ml: 2 }}>
 						<Link
-							style={{ textDecoration: 'none', color: 'black' }}
+							style={{ textDecoration: "none", color: "black" }}
 							to="/login"
 						>
 							Login
@@ -99,12 +117,12 @@ function Register() {
 				</Typography>
 			</Paper>
 			<Snackbar
-				open={open}
+				open={snackBar.open}
 				autoHideDuration={6000}
-				onClose={() => setOpen(false)}
+				onClose={() => setSnackBar({ open: false })}
 			>
-				<Alert severity="success" sx={{ width: '100%' }}>
-					Account created!
+				<Alert severity={snackBar.severity} sx={{ width: "100%" }}>
+					{snackBar.msg}
 				</Alert>
 			</Snackbar>
 		</div>
