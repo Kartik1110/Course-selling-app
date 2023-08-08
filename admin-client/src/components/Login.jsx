@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import axios from 'axios';
-import { useForm } from '../hooks/useForm';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import axios from "axios";
+import { useForm } from "../hooks/useForm";
+import { Link, useNavigate } from "react-router-dom";
 import {
 	Snackbar,
 	Button,
@@ -9,59 +9,73 @@ import {
 	Box,
 	TextField,
 	Paper,
-	Alert,
-} from '@mui/material';
+	Alert
+} from "@mui/material";
 
-/// File is incomplete. You need to add input boxes to take input for users to login.
 function Login() {
 	const [formData, handleFormChange, resetFormData] = useForm({
-		username: '',
-		password: '',
+		username: "",
+		password: ""
 	});
-	const [open, setOpen] = useState(false);
+	/* This is used to set data for SnackBar component  */
+	const [snackBar, setSnackBar] = useState({
+		open: false,
+		severity: "success",
+		msg: ""
+	});
 	const navigate = useNavigate();
 
 	const handleFormSubmit = (e) => {
 		e.preventDefault();
 		axios
 			.post(
-				'http://localhost:3000/admin/login',
+				"http://localhost:3000/admin/login",
 				{},
 				{
 					headers: {
-						'Content-Type': 'application/json',
-						...formData,
-					},
+						"Content-Type": "application/json",
+						...formData
+					}
 				}
 			)
 			.then((res) => {
-				localStorage.setItem('token', res.data?.loggedInAdmin?.token);
-				localStorage.setItem('user', res.data?.loggedInAdmin?.name);
-				setOpen(true);
-				navigate('/courses');
+				localStorage.setItem("token", res.data?.loggedInAdmin?.token);
+				localStorage.setItem("user", res.data?.loggedInAdmin?.name);
+				setSnackBar({
+					open: true,
+					msg: res.data.message,
+					severity: "success"
+				});
+				navigate("/courses");
 			})
-			.catch((error) => console.error(error));
+			.catch((error) => {
+				setSnackBar({
+					open: true,
+					msg: error.response.data.message,
+					severity: "error"
+				});
+			});
 		resetFormData();
 	};
 
 	return (
 		<div
 			style={{
-				height: '90vh',
-				display: 'flex',
-				flexDirection: 'column',
-				alignItems: 'center',
-				justifyContent: 'center',
+				height: "90vh",
+				display: "flex",
+				flexDirection: "column",
+				alignItems: "center",
+				justifyContent: "center"
 			}}
 		>
 			<Paper
 				sx={{
 					padding: 10,
-					width: '400px',
-					display: 'flex',
-					flexDirection: 'column',
-					alignItems: 'center',
-					justifyContent: 'center',
+					width: "400px",
+					display: "flex",
+					flexDirection: "column",
+					alignItems: "center",
+					justifyContent: "center"
 				}}
 				elevation={3}
 			>
@@ -72,14 +86,14 @@ function Login() {
 					component="form"
 					sx={{
 						mt: 1,
-						display: 'flex',
-						flexDirection: 'column',
-						alignItems: 'center',
-						margin: '20px',
+						display: "flex",
+						flexDirection: "column",
+						alignItems: "center",
+						margin: "20px"
 					}}
 				>
 					<TextField
-						sx={{ margin: '20px' }}
+						sx={{ margin: "20px" }}
 						fullWidth={true}
 						type="text"
 						name="username"
@@ -110,7 +124,7 @@ function Login() {
 					New here?
 					<Button size="large" variant="outlined" sx={{ ml: 2 }}>
 						<Link
-							style={{ textDecoration: 'none', color: 'black' }}
+							style={{ textDecoration: "none", color: "black" }}
 							to="/register"
 						>
 							Register
@@ -119,12 +133,12 @@ function Login() {
 				</Typography>
 			</Paper>
 			<Snackbar
-				open={open}
+				open={snackBar.open}
 				autoHideDuration={6000}
-				onClose={() => setOpen(false)}
+				onClose={() => setSnackBar({ open: false })}
 			>
-				<Alert severity="success" sx={{ width: '100%' }}>
-					Logged in successfully!
+				<Alert severity={snackBar.severity} sx={{ width: "100%" }}>
+					{snackBar.msg}
 				</Alert>
 			</Snackbar>
 		</div>
