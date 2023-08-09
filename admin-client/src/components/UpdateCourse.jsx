@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
 	Button,
 	Paper,
@@ -8,22 +8,27 @@ import {
 	Box,
 	Checkbox,
 	Snackbar,
-	Alert,
-} from '@mui/material';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import Course from '../components/Course';
+	Alert
+} from "@mui/material";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import Course from "../components/Course";
 
 export default function UpdateCourse() {
 	const { courseId } = useParams();
 	const [courseObj, setCourseObj] = useState({});
-	const [open, setOpen] = useState(false);
+	/* This is used to set data for SnackBar component  */
+	const [snackBar, setSnackBar] = useState({
+		open: false,
+		severity: "success",
+		msg: ""
+	});
 	const [formData, setFormData] = useState({
-		title: '',
-		description: '',
-		price: '',
-		imageLink: '',
-		published: false,
+		title: "",
+		description: "",
+		price: "",
+		imageLink: "",
+		published: false
 	});
 
 	/* This function is used to handle form change */
@@ -33,14 +38,14 @@ export default function UpdateCourse() {
 
 	useEffect(() => {
 		const fetchCourse = () => {
-			const token = localStorage.getItem('token');
+			const token = localStorage.getItem("token");
 
 			axios
 				.get(`http://localhost:3000/admin/courses/${courseId}`, {
 					headers: {
-						'Content-Type': 'application/json',
-						Authorization: `Bearer ${token}`,
-					},
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`
+					}
 				})
 				.then((res) => {
 					setCourseObj(res.data.course);
@@ -51,7 +56,7 @@ export default function UpdateCourse() {
 						description,
 						price: String(price),
 						imageLink,
-						published,
+						published
 					});
 				});
 		};
@@ -60,42 +65,53 @@ export default function UpdateCourse() {
 
 	/* This function is used to handle course update  */
 	const handleCourseUpdate = () => {
-		const token = localStorage.getItem('token');
+		const token = localStorage.getItem("token");
 
 		const updatedCourse = {
 			title: formData.title,
 			description: formData.description,
 			price: Number(formData.price),
 			imageLink: formData.imageLink,
-			published: Boolean(formData.published),
+			published: Boolean(formData.published)
 		};
 
 		axios
 			.put(`http://localhost:3000/admin/courses/${courseId}`, updatedCourse, {
 				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}`,
-				},
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`
+				}
 			})
-			.then(() => {
-				setOpen(true);
+			.then((res) => {
+				setSnackBar({
+					open: true,
+					msg: res.data.message,
+					severity: "success"
+				});
+			})
+			.catch((error) => {
+				setSnackBar({
+					open: true,
+					msg: error.response.data.message,
+					severity: "error"
+				});
 			});
 		setFormData({
-			title: '',
-			description: '',
-			price: '',
-			imageLink: '',
-			published: false,
+			title: "",
+			description: "",
+			price: "",
+			imageLink: "",
+			published: false
 		});
 	};
 
 	return (
 		<div
 			style={{
-				height: '90vh',
-				display: 'flex',
-				alignItems: 'center',
-				justifyContent: 'center',
+				height: "90vh",
+				display: "flex",
+				alignItems: "center",
+				justifyContent: "center"
 			}}
 		>
 			<Course courses={courseObj} />;
@@ -104,11 +120,11 @@ export default function UpdateCourse() {
 					marginTop: 8,
 					marginBottom: 8,
 					padding: 10,
-					width: '400px',
-					display: 'flex',
-					flexDirection: 'column',
-					alignItems: 'center',
-					justifyContent: 'center',
+					width: "400px",
+					display: "flex",
+					flexDirection: "column",
+					alignItems: "center",
+					justifyContent: "center"
 				}}
 				elevation={3}
 			>
@@ -119,14 +135,14 @@ export default function UpdateCourse() {
 					component="form"
 					sx={{
 						mt: 1,
-						display: 'flex',
-						flexDirection: 'column',
-						alignItems: 'center',
-						margin: '20px',
+						display: "flex",
+						flexDirection: "column",
+						alignItems: "center",
+						margin: "20px"
 					}}
 				>
 					<TextField
-						sx={{ margin: '20px' }}
+						sx={{ margin: "20px" }}
 						fullWidth={true}
 						label="Title"
 						type="text"
@@ -135,7 +151,7 @@ export default function UpdateCourse() {
 						onChange={(e) => handleFormChange(e)}
 					/>
 					<TextField
-						sx={{ margin: '20px' }}
+						sx={{ margin: "20px" }}
 						fullWidth={true}
 						label="Description"
 						type="text"
@@ -144,7 +160,7 @@ export default function UpdateCourse() {
 						onChange={(e) => handleFormChange(e)}
 					/>
 					<TextField
-						sx={{ margin: '20px' }}
+						sx={{ margin: "20px" }}
 						fullWidth={true}
 						label="Price"
 						type="text"
@@ -153,7 +169,7 @@ export default function UpdateCourse() {
 						onChange={(e) => handleFormChange(e)}
 					/>
 					<TextField
-						sx={{ margin: '20px' }}
+						sx={{ margin: "20px" }}
 						fullWidth={true}
 						label="Image Link"
 						type="text"
@@ -183,12 +199,12 @@ export default function UpdateCourse() {
 				</div>
 			</Paper>
 			<Snackbar
-				open={open}
+				open={snackBar.open}
 				autoHideDuration={6000}
-				onClose={() => setOpen(false)}
+				onClose={() => setSnackBar({ open: false })}
 			>
-				<Alert severity="success" sx={{ width: '100%' }}>
-					Course updated successfully!
+				<Alert severity={snackBar.severity} sx={{ width: "100%" }}>
+					{snackBar.msg}
 				</Alert>
 			</Snackbar>
 		</div>
